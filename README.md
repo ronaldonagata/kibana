@@ -1,2 +1,2 @@
-# kibana
-This repository willl hond contents abouy my kibana projcts
+# Kibana Repository
+This repository willl hond contents abouy my kibana projects
