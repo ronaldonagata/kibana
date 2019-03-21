@@ -1,8 +1,96 @@
+#  Elastic characteristics
+#    Comes from Lucene
+#    Search Engine
+#    Uses REST API, (HEAD, PUT, POST, GET, DELETE)
+#    JSON format
+#    Horizontal scalability
+#    Run in cloud
+#    Aggregation operations and geospaces searches 
+
+
+# Relational Database   -->    ElasticSearch
+# instance              -->    index     
+# table                 -->    type
+# schema                -->    mapping
+# tuple                 -->    document
+# column                -->    attribute    
+
+
+# Shards -> Partioning the data
+# Primary Shards -> The write process occurs first here (create, update and remotion)
+# Secondary Chards -> The write is replicated at secondary chards
+# Lots of chards will gain in write process, on the other hand it can slow down the read process. 
+# It is not good to have more than 50 GB per shard 
+# The number of shards is defined when the index is created, and it can't be changed after that.
+# The number of replicas is defined at the index creation, but it can be changed after. 
+
+# With GET, HEAD and put it is oligated to use and id
+# If you don't provide what is the version you want, el will return the last version
+# If you don't provide the id in POST request, the id will be auto-incremented
+# If you provide the document id, it will create or update partially the document
+#   Ex: POST /<index>/<type>/<id>/_update
+# The PUT command will overwrithe the whole document
+
 # Checking health of kibana
-GET /_cat/health?v
+GET /<index>/health?v
 
 # Checking indices
-GET /_cat/indices?v
+GET /<index>/indices?v
+
+# Set number of replicas of an indice
+PUT /<index>/_settings
+{
+  "index":{
+    "number_of_replicas" : 0
+  }
+}
+
+#Get the number of documents
+GET /<index>/<type>/_count
+
+#Get the Element with this unique identifier 
+GET /<index>/<type>/<identifier>
+
+#Get all documents
+GET /<index>/<type>/_search
+
+#Simple search
+GET /<index>/<type>/_search?q=<term>
+
+#Simple search imposing a limit to number of elements
+GET /<index>/<type>/_search?q=<term>&size=<numberofelements>
+
+#Simple search imposing a limit to number of elements, using pagination.
+GET /<index>/<type>/_search?q=<term>&size=<numberofelements>&from=<position>
+
+# GET with all attribute
+GET /<index>/<type>/_search?q=_all:<something>
+
+# Simple get wchich return juts the attributes you want
+GET /<index>/<type>/<id>?pretty&_source=<attribute>
+
+
+# Meaning of result body
+# took --> Time to execute the search i miliseconds
+# time_out --> If the search reach the time limit
+# _shards.total --> Number of shards that the search lookd format
+# _shards.successful -> Number of shards which successully complete the search
+# _shards.failed --> Number of shards which failed during the search process
+# hits.total --> Number of documents found.
+# hits.max_score -->  Value between 0 and 1, represents how much the match with the document with term searched. 1 is perfect match 
+
+
+
+
+# Verify if the document exists
+HEAD /<index>/<type>/<id>
+
+# Delete a document 
+DELETE /<index>/<type>/<id>
+
+# Update a document
+POST /<index>/<type>/<id>/_update
+
 
 # Set number of replicas to zero  when workin with single node
 PUT /products
@@ -74,7 +162,7 @@ PUT /products
   }
 }
 
-# Example HOw to insert
+# Example How to insert
 POST /products/apparel
 {
   "name": "Hello World",
