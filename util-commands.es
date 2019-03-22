@@ -78,8 +78,18 @@ GET /<index>/<type>/<id>?pretty&_source=<attribute>
 # _shards.failed --> Number of shards which failed during the search process
 # hits.total --> Number of documents found.
 # hits.max_score -->  Value between 0 and 1, represents how much the match with the document with term searched. 1 is perfect match 
+# hits.hits --> All the documents found.
 
 
+
+
+
+
+########### Analysers generate the tokens
+# White Space -> Elminate blank space 
+# Simple -> Only letters, to lowercase
+# Standard -> No sapce, no points accents
+# Idiom -> it is specific for each language
 
 
 # Verify if the document exists
